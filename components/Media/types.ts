@@ -17,6 +17,7 @@ export interface MediaItemProps {
   onClick?: () => void;
   className?: string;
   priority?: boolean;
+  size?: 'small' | 'medium' | 'large';
 }
 
 export interface MediaViewerProps {
@@ -27,6 +28,8 @@ export interface MediaViewerProps {
   onPrevious?: () => void;
   hasNext?: boolean;
   hasPrevious?: boolean;
+  allItems?: MediaItem[]; // All items for navigation
+  activeIndex?: number; // Current active index
 }
 
 export interface MediaGridProps {

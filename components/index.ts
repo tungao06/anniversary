@@ -18,6 +18,13 @@ export * from './Interactive';
 // Surprise Components
 export * from './Surprise';
 
+// Effects Components
+export * from './Effects';
+
 // Common Components
 export * from './Common';
+
+// Scroll Components
+export { default as ScrollSection } from './ScrollSection';
+export { default as ScrollReveal } from './ScrollReveal';
 

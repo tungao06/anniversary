@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "memories": "Memories",
+    "surprise": "Surprise"
+  },
+  "home": {
+    "title": "Our Anniversary",
+    "subtitle": "Together for",
+    "daysTogether": "days",
+    "welcomeMessage": "A special day filled with love and memories. Let's begin our eternal journey of love together.",
+    "startButton": "Start Our Love",
+    "memoriesButton": "Memories",
+    "scrollDown": "Scroll Down",
+    "ourStoryTitle": "Our Story",
+    "ourStoryDescription": "Every moment we spend together is a special memory. Whether it's an ordinary day or a special occasion, every second together is the greatest gift.",
+    "loveTitle": "Love",
+    "loveDescription": "Love that grows every day",
+    "memoriesTitle": "Memories",
+    "memoriesDescription": "Special moments kept in our hearts",
+    "futureTitle": "Future",
+    "futureDescription": "A journey that never ends",
+    "ourMemoriesTitle": "Our Memories",
+    "ourMemoriesDescription": "Special photos and videos capturing beautiful moments",
+    "viewGalleryButton": "View Gallery",
+    "startJourneyTitle": "Start the Journey",
+    "startJourneyDescription": "Let's begin our eternal journey of love together"
+  },
+  "gallery": {
+    "title": "Our Memories",
+    "subtitle": "Special photos and videos from Google Drive",
+    "loading": "Loading memories...",
+    "error": "An error occurred",
+    "retry": "Try Again",
+    "noMedia": "No images in Google Drive yet"
+  },
+  "memories": {
+    "title": "Our Memories",
+    "subtitle": "Special moments we've shared together"
+  },
+  "surprise": {
+    "title": "Special Surprise",
+    "subtitle": "Ready for a surprise?",
+    "waiting": "A surprise is waiting for you!",
+    "clickToOpen": "Click the button below to open the surprise",
+    "clicksRemaining": "clicks remaining...",
+    "openButton": "Open Surprise",
+    "messageTitle": "Surprise!",
+    "message": "I love you more than anything in the world! Thank you for always being with me, and I hope we'll be together forever."
+  },
+  "common": {
+    "anniversary": "Anniversary",
+    "madeWith": "Made with"
+  },
+  "preview": {
+    "close": "Close",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "rotate": "Rotate",
+    "reset": "Reset",
+    "zoom": "Zoom",
+    "dragToPan": "Drag to pan",
+    "closeTooltip": "Close (ESC)",
+    "zoomInTooltip": "Zoom In (+ or Ctrl + Scroll Up)",
+    "zoomOutTooltip": "Zoom Out (- or Ctrl + Scroll Down)",
+    "rotateTooltip": "Rotate 90° (R)",
+    "resetTooltip": "Reset Zoom & Rotate (0)",
+    "previous": "Previous",
+    "next": "Next",
+    "loadingError": "Failed to load image",
+    "loadingErrorRetry": "Please try again"
+  }
+}
+

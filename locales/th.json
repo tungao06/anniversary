@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "หน้าแรก",
+    "gallery": "แกลเลอรี",
+    "memories": "ความทรงจำ",
+    "surprise": "เซอร์ไพรส์"
+  },
+  "home": {
+    "title": "วันครบรอบของเรา",
+    "subtitle": "ร่วมกันมาแล้ว",
+    "daysTogether": "วัน",
+    "welcomeMessage": "วันที่พิเศษของเราที่เต็มไปด้วยความรักและความทรงจำ มาเริ่มต้นการเดินทางแห่งความรักนิรันดร์กันเถอะ",
+    "startButton": "เริ่มต้นความรัก",
+    "memoriesButton": "ความทรงจำ",
+    "scrollDown": "เลื่อนลง",
+    "ourStoryTitle": "เรื่องราวของเรา",
+    "ourStoryDescription": "ทุกช่วงเวลาที่เราได้ใช้ร่วมกันล้วนเป็นความทรงจำที่พิเศษ ไม่ว่าจะเป็นวันธรรมดาหรือวันพิเศษ ทุกวินาทีที่อยู่ด้วยกันคือของขวัญที่ยิ่งใหญ่ที่สุด",
+    "loveTitle": "ความรัก",
+    "loveDescription": "ความรักที่เติบโตขึ้นทุกวัน",
+    "memoriesTitle": "ความทรงจำ",
+    "memoriesDescription": "ช่วงเวลาพิเศษที่เก็บไว้ในใจ",
+    "futureTitle": "อนาคต",
+    "futureDescription": "การเดินทางที่ยังไม่สิ้นสุด",
+    "ourMemoriesTitle": "ความทรงจำของเรา",
+    "ourMemoriesDescription": "รูปภาพและวิดีโอพิเศษที่บันทึกช่วงเวลาที่สวยงาม",
+    "viewGalleryButton": "ดูแกลเลอรี",
+    "startJourneyTitle": "เริ่มต้นการเดินทาง",
+    "startJourneyDescription": "มาเริ่มต้นการเดินทางแห่งความรักนิรันดร์กันเถอะ"
+  },
+  "gallery": {
+    "title": "ความทรงจำของเรา",
+    "subtitle": "รูปภาพและวิดีโอพิเศษจาก Google Drive",
+    "loading": "กำลังโหลดความทรงจำ...",
+    "error": "เกิดข้อผิดพลาด",
+    "retry": "ลองอีกครั้ง",
+    "noMedia": "ยังไม่มีรูปภาพใน Google Drive"
+  },
+  "memories": {
+    "title": "ความทรงจำของเรา",
+    "subtitle": "ช่วงเวลาพิเศษที่เราได้ใช้ร่วมกัน"
+  },
+  "surprise": {
+    "title": "เซอร์ไพรส์พิเศษ",
+    "subtitle": "พร้อมรับเซอร์ไพรส์แล้วหรือยัง?",
+    "waiting": "เซอร์ไพรส์กำลังรอคุณอยู่!",
+    "clickToOpen": "กดปุ่มด้านล่างเพื่อเปิดเซอร์ไพรส์",
+    "clicksRemaining": "ครั้งเหลืออยู่...",
+    "openButton": "เปิดเซอร์ไพรส์",
+    "messageTitle": "เซอร์ไพรส์!",
+    "message": "ฉันรักคุณมากที่สุดในโลก! ขอบคุณที่อยู่ด้วยกันมาเสมอ และหวังว่าเราจะอยู่ด้วยกันไปอีกนานแสนนาน"
+  },
+  "common": {
+    "anniversary": "Anniversary",
+    "madeWith": "Made with"
+  },
+  "preview": {
+    "close": "ปิด",
+    "zoomIn": "ขยาย",
+    "zoomOut": "ย่อ",
+    "rotate": "หมุน",
+    "reset": "รีเซ็ต",
+    "zoom": "ซูม",
+    "dragToPan": "ลากเพื่อเลื่อนดู",
+    "closeTooltip": "ปิด (ESC)",
+    "zoomInTooltip": "ขยาย (+ หรือ Ctrl + Scroll Up)",
+    "zoomOutTooltip": "ย่อ (- หรือ Ctrl + Scroll Down)",
+    "rotateTooltip": "หมุน 90° (R)",
+    "resetTooltip": "รีเซ็ต Zoom & Rotate (0)",
+    "previous": "ก่อนหน้า",
+    "next": "ถัดไป",
+    "loadingError": "ไม่สามารถโหลดรูปภาพได้",
+    "loadingErrorRetry": "กรุณาลองอีกครั้ง"
+  }
+}
+

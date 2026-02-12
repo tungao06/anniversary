@@ -27,6 +27,9 @@ export async function fetchDriveFiles(
     orderBy: 'createdTime desc',
     pageSize: '50',
     key: apiKey,
+    // เพิ่ม parameters เหล่านี้สำหรับ shared/public folders
+    supportsAllDrives: 'true',
+    includeItemsFromAllDrives: 'true',
   });
 
   if (pageToken) {
@@ -42,6 +45,11 @@ export async function fetchDriveFiles(
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
+    console.error('Google Drive API Error:', {
+      status: response.status,
+      statusText: response.statusText,
+      error: error.error || error,
+    });
     throw new Error(
       `Google Drive API error: ${response.status} - ${error.error?.message || response.statusText}`
     );
@@ -61,13 +69,16 @@ export function convertToMediaItem(file: GoogleDriveFile): MediaItem | null {
     return null;
   }
 
-  // Generate direct URL for image/video
-  const directUrl = file.webContentLink || 
-    `https://drive.google.com/uc?export=view&id=${file.id}`;
+  // สำหรับ public files ใช้ format นี้
+  // Images: ใช้ export=view สำหรับ preview
+  // Videos: ใช้ export=download หรือ stream
+  const directUrl = isImage
+    ? `https://drive.google.com/uc?export=view&id=${file.id}`
+    : file.webContentLink || `https://drive.google.com/uc?export=download&id=${file.id}`;
 
-  // For videos, use thumbnail or generate one
+  // สำหรับ thumbnail - ใช้ thumbnailLink ถ้ามี หรือ generate
   const thumbnailUrl = file.thumbnailLink || 
-    (isImage ? directUrl : `https://drive.google.com/thumbnail?id=${file.id}&sz=w1000`);
+    `https://drive.google.com/thumbnail?id=${file.id}&sz=w1000`;
 
   return {
     id: file.id,
@@ -94,18 +105,29 @@ export async function fetchAllMediaItems(
   const mediaItems: MediaItem[] = [];
   let nextPageToken: string | undefined;
 
-  do {
-    const response = await fetchDriveFiles(folderId, nextPageToken);
-    
-    response.files?.forEach((file) => {
-      const mediaItem = convertToMediaItem(file);
-      if (mediaItem) {
-        mediaItems.push(mediaItem);
-      }
-    });
+  try {
+    do {
+      const response = await fetchDriveFiles(folderId, nextPageToken);
+      
+      console.log(`Fetched ${response.files?.length || 0} files from Drive`);
+      
+      response.files?.forEach((file) => {
+        const mediaItem = convertToMediaItem(file);
+        if (mediaItem) {
+          mediaItems.push(mediaItem);
+        } else {
+          console.log(`Skipped file: ${file.name} (type: ${file.mimeType})`);
+        }
+      });
 
-    nextPageToken = response.nextPageToken;
-  } while (nextPageToken);
+      nextPageToken = response.nextPageToken;
+    } while (nextPageToken);
+
+    console.log(`Total media items found: ${mediaItems.length}`);
+  } catch (error) {
+    console.error('Error in fetchAllMediaItems:', error);
+    throw error;
+  }
 
   return mediaItems;
 }
@@ -119,6 +141,8 @@ export async function fetchFileById(fileId: string): Promise<GoogleDriveFile> {
   const params = new URLSearchParams({
     fields: 'id, name, mimeType, thumbnailLink, webViewLink, webContentLink, size, createdTime, modifiedTime, videoMediaMetadata, imageMediaMetadata',
     key: apiKey,
+    supportsAllDrives: 'true',
+    includeItemsFromAllDrives: 'true',
   });
 
   const response = await fetch(

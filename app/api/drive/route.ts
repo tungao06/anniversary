@@ -13,7 +13,9 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const folderId = searchParams.get('folderId') || undefined;
 
+    console.log('Fetching media items from Google Drive...', { folderId });
     const mediaItems = await fetchAllMediaItems(folderId);
+    console.log(`Found ${mediaItems.length} media items`);
 
     const response: ApiResponse<MediaItem[]> = {
       success: true,
@@ -26,6 +28,10 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error fetching Drive files:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     
     const response: ApiResponse<never> = {
       success: false,

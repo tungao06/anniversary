@@ -13,14 +13,16 @@ export default function Header({
   return (
     <header className={`py-8 text-center ${className}`}>
       {title && (
-        <h1 className="mb-2 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-          {title}
+        <h1 className="mb-4 font-elegant text-5xl font-normal leading-normal sm:text-6xl md:text-7xl tracking-tight pt-2">
+          <span className="text-love-gradient">{title}</span>
         </h1>
       )}
       {subtitle && (
-        <p className="text-lg text-gray-600 dark:text-gray-400 sm:text-xl">
-          {subtitle}
-        </p>
+        <div className="glass mx-auto inline-block rounded-2xl px-6 py-3 backdrop-blur-md">
+          <p className="text-lg font-light text-gray-600 sm:text-xl">
+            {subtitle}
+          </p>
+        </div>
       )}
     </header>
   );

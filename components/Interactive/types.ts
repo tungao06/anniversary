@@ -20,7 +20,7 @@ export interface EasterEggProps {
 
 export interface AnimationProps {
   children: ReactNode;
-  type?: 'fade' | 'slide' | 'bounce' | 'pulse' | 'heart';
+  type?: 'fade' | 'slide' | 'bounce' | 'pulse' | 'heart' | 'float' | 'zoom';
   delay?: number;
   duration?: number;
   className?: string;

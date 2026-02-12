@@ -1,12 +1,15 @@
 /**
  * MediaViewer Component
- * Full-screen viewer for media items with navigation
+ * Full-screen viewer using react-viewer library
+ * Opens one image at a time, no navigation
  */
 
 'use client';
 
-import { useEffect } from 'react';
-import Image from 'next/image';
+import { useEffect, useState, useMemo } from 'react';
+import Viewer from 'react-viewer';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslations } from '@/lib/i18n';
 import type { MediaViewerProps } from './types';
 
 export default function MediaViewer({
@@ -17,147 +20,158 @@ export default function MediaViewer({
   onPrevious,
   hasNext = false,
   hasPrevious = false,
+  allItems = [],
+  activeIndex: propActiveIndex,
 }: MediaViewerProps) {
+  const { language } = useLanguage();
+  const t = getTranslations(language);
+  const [visible, setVisible] = useState(false);
+
+  // Convert all items to react-viewer format
+  const images = useMemo(() => {
+    // If we have allItems, use them for navigation
+    if (allItems.length > 0) {
+      return allItems
+        .filter((img) => img.type === 'image')
+        .map((img) => ({
+          src: img.thumbnailUrl || img.directUrl || img.webViewUrl || '',
+          alt: img.name || 'Image',
+          downloadUrl: img.directUrl || img.thumbnailUrl || '',
+        }))
+        .filter((img) => img.src); // Remove items without valid URL
+    }
+    
+    // Fallback: single image mode
+    if (!item || item.type !== 'image') return [];
+    
+    const imageUrl = item.thumbnailUrl || item.directUrl || item.webViewUrl;
+    
+    if (!imageUrl) {
+      return [];
+    }
+    
+    return [
+      {
+        src: imageUrl,
+        alt: item.name || 'Image',
+        downloadUrl: item.directUrl || imageUrl,
+      },
+    ];
+  }, [item, allItems]);
+  
+  // Find current image index
+  const activeIndex = useMemo(() => {
+    // Use propActiveIndex if provided
+    if (propActiveIndex !== undefined && propActiveIndex >= 0) {
+      return propActiveIndex;
+    }
+    
+    // Fallback: find by URL
+    if (!item || images.length === 0) return 0;
+    const currentUrl = item.thumbnailUrl || item.directUrl || item.webViewUrl;
+    const index = images.findIndex((img) => img.src === currentUrl);
+    return index >= 0 ? index : 0;
+  }, [item, images, propActiveIndex]);
+
+  // Sync visible state with isOpen prop
   useEffect(() => {
-    if (isOpen) {
+    setVisible(isOpen);
+  }, [isOpen]);
+
+  // Prevent body scroll when viewer is open
+  useEffect(() => {
+    if (visible) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [visible]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        onClose();
-      } else if (e.key === 'ArrowRight' && hasNext) {
-        onNext?.();
-      } else if (e.key === 'ArrowLeft' && hasPrevious) {
-        onPrevious?.();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, hasNext, hasPrevious, onClose, onNext, onPrevious]);
-
-  if (!isOpen || !item) return null;
+  if (!item || item.type !== 'image' || images.length === 0) {
+    return null;
+  }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      {/* Close Button */}
-      <button
-        onClick={onClose}
-        className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
-        aria-label="Close"
-      >
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
-
-      {/* Previous Button */}
-      {hasPrevious && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onPrevious?.();
+    <>
+      <Viewer
+        visible={visible}
+        onClose={() => {
+          setVisible(false);
+          onClose();
+        }}
+        images={images}
+        activeIndex={activeIndex}
+        zIndex={9999}
+        // Disable navbar (thumbnail bar at bottom) - always hide
+        noNavbar={true}
+        noToolbar={false}
+        // Use default toolbar (zoom, rotate, reset, close)
+        // Zoom and rotate settings
+        zoomSpeed={0.1}
+        scalable={true}
+        rotatable={true}
+        // Enable drag to change image (swipe left/right)
+        drag={images.length > 1}
+        // Enable keyboard navigation (arrow keys)
+        keyboard={images.length > 1}
+        // Handle image change
+        onChange={(img, index) => {
+          if (onNext && index > activeIndex) {
+            onNext();
+          } else if (onPrevious && index < activeIndex) {
+            onPrevious();
+          }
+        }}
+      />
+      
+      {/* Video viewer (not supported by react-viewer) */}
+      {item.type === 'video' && isOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+          onClick={onClose}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            margin: 0,
+            padding: 0,
+            overflow: 'hidden',
+            zIndex: 9999,
           }}
-          className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
-          aria-label="Previous"
         >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 z-20 rounded-full bg-black/70 backdrop-blur-md p-3 text-white transition-all hover:bg-white/20 hover:scale-110"
+            aria-label={t.preview.close}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-      )}
-
-      {/* Next Button */}
-      {hasNext && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onNext?.();
-          }}
-          className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
-          aria-label="Next"
-        >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-      )}
-
-      {/* Media Content */}
-      <div
-        className="relative max-h-[90vh] max-w-[90vw]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {item.type === 'image' ? (
-          <Image
-            src={item.directUrl}
-            alt={item.name}
-            width={item.width || 1920}
-            height={item.height || 1080}
-            className="max-h-[90vh] w-auto object-contain"
-            unoptimized
-          />
-        ) : (
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
           <video
             src={item.directUrl}
             controls
             autoPlay
-            className="max-h-[90vh] w-auto"
+            className="max-w-full max-h-full"
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              objectFit: 'contain',
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
             Your browser does not support the video tag.
           </video>
-        )}
-
-        {/* Media Info */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
-          <p className="text-lg font-medium">{item.name}</p>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
-

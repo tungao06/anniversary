@@ -26,13 +26,15 @@ export default function Animation({
   }, [delay]);
 
   const animationClasses = {
-    fade: isVisible ? 'opacity-100' : 'opacity-0',
+    fade: isVisible ? 'animate-fade-in opacity-100' : 'opacity-0',
     slide: isVisible
-      ? 'translate-y-0 opacity-100'
-      : 'translate-y-4 opacity-0',
-    bounce: isVisible ? 'animate-bounce' : 'opacity-0',
-    pulse: isVisible ? 'animate-pulse' : 'opacity-0',
-    heart: isVisible ? 'animate-pulse scale-100' : 'opacity-0 scale-95',
+      ? 'animate-fade-in-up opacity-100'
+      : 'opacity-0 translate-y-4',
+    bounce: isVisible ? 'animate-bounce opacity-100' : 'opacity-0',
+    pulse: isVisible ? 'animate-pulse opacity-100' : 'opacity-0',
+    heart: isVisible ? 'animate-pulse-heart scale-100 opacity-100' : 'opacity-0 scale-95',
+    float: isVisible ? 'animate-float opacity-100' : 'opacity-0',
+    zoom: isVisible ? 'animate-zoom-in opacity-100' : 'opacity-0 scale-90',
   };
 
   const transitionStyle = {
